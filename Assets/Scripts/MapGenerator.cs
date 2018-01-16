@@ -32,7 +32,10 @@ public class MapGenerator : MonoBehaviour {
     public GameObject coordinatePrefab;
     [Tooltip("Prefab to be used for each road")]
     public GameObject roadPrefab;
-    public GameObject[] intersectionPrefab;
+    public GameObject splitPrefab;
+
+    public GameObject roadContainer;
+    public GameObject splitRoadContainer;
 
     public float roadWidth = 4f;
 
@@ -87,9 +90,12 @@ public class MapGenerator : MonoBehaviour {
         {
             if (currentObject.GetComponent<Identifier>().location <= size * size)
             {
+                GameObject roadHorizontal;
+                GameObject roadVertical;
+
                 if (currentObject.GetComponent<Identifier>().locationY < size - 1)
                 {
-                    var roadHorizontal = Instantiate(roadPrefab, currentObject.transform.position, Quaternion.identity);
+                    roadHorizontal = Instantiate(roadPrefab, currentObject.transform.position, Quaternion.identity, roadContainer.transform);
                     roadHorizontal.name = "Horizontal Road";
 
                     roadHorizontal.transform.localScale = new Vector3(roadWidth, 0.5f, Vector3.Distance(roadHorizontal.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1].transform.position) - intersectionSize);
@@ -99,7 +105,7 @@ public class MapGenerator : MonoBehaviour {
 
                 if(currentObject.GetComponent<Identifier>().locationX < size - 1)
                 {
-                    var roadVertical = Instantiate(roadPrefab, currentObject.transform.position, Quaternion.identity);
+                    roadVertical = Instantiate(roadPrefab, currentObject.transform.position, Quaternion.identity, roadContainer.transform);
                     roadVertical.name = "Vertical Road";
 
                     roadVertical.transform.localScale = new Vector3(roadWidth, 0.5f, Vector3.Distance(roadVertical.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))].transform.position) - intersectionSize);
@@ -110,22 +116,15 @@ public class MapGenerator : MonoBehaviour {
         }
     }
 
-    public void ClearCoordinates() { foreach (GameObject i in GameObject.FindGameObjectsWithTag("Coordinate")){ Destroy(i); } }
 
-    public void CreateIntersections()
-    {
-        foreach (GameObject i in GameObject.FindGameObjectsWithTag("Coordinate"))
-        {
-            Instantiate(intersectionPrefab[UnityEngine.Random.Range(0, intersectionPrefab.Length)], i.transform.position, Quaternion.identity);
-        }
-    }
+    public void ClearCoordinates() { foreach (GameObject i in GameObject.FindGameObjectsWithTag("Coordinate")){ Destroy(i); } }
     
+
     public void GenerateRoads()
     {
         CreateCoordinates();
         CreateCoordinateGameObjects();
         CreateRoadGameObject();
-        CreateIntersections();
         ClearCoordinates();
     }
 
