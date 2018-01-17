@@ -36,6 +36,10 @@ public class MapGenerator : MonoBehaviour {
 
     public GameObject roadContainer;
     public GameObject splitRoadContainer;
+    public GameObject horizontalContainer;
+    public GameObject verticalContainer;
+
+    List<GameObject[]> allGridSquares = new List<GameObject[]>();
 
     public float roadWidth = 4f;
 
@@ -95,30 +99,38 @@ public class MapGenerator : MonoBehaviour {
 
                 if (currentObject.GetComponent<Identifier>().locationY < size - 1)
                 {
-                    roadHorizontal = Instantiate(roadPrefab, currentObject.transform.position, Quaternion.identity, roadContainer.transform);
+                    roadHorizontal = RoadGenerator.ConnectWithMainRoad(currentObject.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1].transform.position, roadPrefab);
+                    roadHorizontal.transform.parent = horizontalContainer.transform;
                     roadHorizontal.name = "Horizontal Road";
-
-                    roadHorizontal.transform.localScale = new Vector3(roadWidth, 0.5f, Vector3.Distance(roadHorizontal.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1].transform.position) - intersectionSize);
-                    roadHorizontal.transform.LookAt(coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1].transform.position);
-                    roadHorizontal.transform.position += roadHorizontal.transform.forward * ((roadHorizontal.transform.localScale.z / 2) + (intersectionSize / 2));
                 }
 
                 if(currentObject.GetComponent<Identifier>().locationX < size - 1)
                 {
-                    roadVertical = Instantiate(roadPrefab, currentObject.transform.position, Quaternion.identity, roadContainer.transform);
+                    roadVertical = RoadGenerator.ConnectWithMainRoad(currentObject.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))].transform.position, roadPrefab);
+                    roadVertical.transform.parent = verticalContainer.transform;
                     roadVertical.name = "Vertical Road";
-
-                    roadVertical.transform.localScale = new Vector3(roadWidth, 0.5f, Vector3.Distance(roadVertical.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))].transform.position) - intersectionSize);
-                    roadVertical.transform.LookAt(coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))].transform);
-                    roadVertical.transform.position += roadVertical.transform.forward * ((roadVertical.transform.localScale.z / 2) + (intersectionSize/2));
                 }
             }
+
+            if(currentObject.GetComponent<Identifier>().locationY < size - 1 && currentObject.GetComponent<Identifier>().locationX < size - 1)
+            {
+                allGridSquares.Add(new GameObject[4] {
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location],                              //One at original
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1],                          //One to right
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))],    //One down
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size) + 1)] //One to lower right
+                });
+            }
+        }
+
+        foreach(GameObject[] currentGridCoordinates in allGridSquares)
+        {
+            RoadGenerator.ConnectWithSideRoad(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, 0.5f), Vector3.Lerp(currentGridCoordinates[2].transform.position, currentGridCoordinates[3].transform.position, 0.5f), splitPrefab, splitRoadContainer, roadWidth*0.75f);
+            RoadGenerator.ConnectWithSideRoad(Vector3.Lerp(currentGridCoordinates[1].transform.position, currentGridCoordinates[3].transform.position, 0.5f), Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position, 0.5f), splitPrefab, splitRoadContainer, roadWidth*0.75f);
         }
     }
 
-
     public void ClearCoordinates() { foreach (GameObject i in GameObject.FindGameObjectsWithTag("Coordinate")){ Destroy(i); } }
-    
 
     public void GenerateRoads()
     {
