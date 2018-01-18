@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Coordinate
   - Road
+  - MapGenerator
   layers:
   - Default
   - TransparentFX

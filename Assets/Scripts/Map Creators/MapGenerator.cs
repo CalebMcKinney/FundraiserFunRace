@@ -12,19 +12,23 @@ public class MapGenerator : MonoBehaviour {
 
     public Dictionary<int, GameObject> coordinateDictionary = new Dictionary<int, GameObject>();
 
-    public CoordinateGenerator coordGen;
-    public RoadGenerator roadGen;
-    public BuildingGenerator buildingGen;
+    private CoordinateGenerator coordGen;
+    private RoadGenerator roadGen;
+    private BuildingGenerator buildingGen;
 
     private void Start()
     {
+        coordGen = gameObject.GetComponent<CoordinateGenerator>();
+        roadGen = gameObject.GetComponent<RoadGenerator>();
+        buildingGen = gameObject.GetComponent<BuildingGenerator>();
+
         GenerateRoads();
     }
 
     public void GenerateRoads()
     {
-        coordGen.CreateCoordinates();
-        coordGen.CreateCoordinateGameObjects();
-        roadGen.CreateRoadGameObject();
+        coordGen.CreateCoordinates(size);
+        coordGen.CreateCoordinateGameObjects(ref coordinateDictionary);
+        roadGen.CreateRoadGameObject(size, ref coordinateDictionary);
     }
 }

@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 1842028771}
   m_Layer: 0
   m_Name: Map Generator
-  m_TagString: Untagged
+  m_TagString: MapGenerator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -522,10 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eecd304cce20db489cd7159b02d0d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 14
-  coordGen: {fileID: 1842028773}
-  roadGen: {fileID: 1842028772}
-  buildingGen: {fileID: 1842028771}
+  size: 16
 --- !u!4 &1842028770
 Transform:
   m_ObjectHideFlags: 0
@@ -584,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72deea2a9d9b386468da3b7f222e5ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapGen: {fileID: 1842028769}
   ruralMapOffset: {x: 0, y: 0}
   coordinatePrefab: {fileID: 1760611299205508, guid: c66e4310980263949b2ec87532a5575b,
     type: 2}

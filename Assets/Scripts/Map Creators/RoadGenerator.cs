@@ -4,8 +4,6 @@ using UnityEngine;
 using System;
 
 public class RoadGenerator : MonoBehaviour {
-    public MapGenerator mapGen;
-
     public float roadWidth;
 
     public GameObject splitRoadContainer;
@@ -17,39 +15,39 @@ public class RoadGenerator : MonoBehaviour {
 
     public List<GameObject[]> allGridSquares = new List<GameObject[]>();
 
-    public void CreateRoadGameObject()
+    public void CreateRoadGameObject(int size, ref Dictionary<int, GameObject> coordinateDictionary)
     {
         GameObject[] allCoordinates = GameObject.FindGameObjectsWithTag("Coordinate");
 
         foreach (GameObject currentObject in allCoordinates)
         {
-            if (currentObject.GetComponent<Identifier>().location <= mapGen.size * mapGen.size)
+            if (currentObject.GetComponent<Identifier>().location <= size * size)
             {
                 GameObject roadHorizontal;
                 GameObject roadVertical;
 
-                if (currentObject.GetComponent<Identifier>().locationY < mapGen.size - 1)
+                if (currentObject.GetComponent<Identifier>().locationY < size - 1)
                 {
-                    roadHorizontal = ConnectWithMainRoad(currentObject.transform.position, mapGen.coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1].transform.position, roadPrefab);
+                    roadHorizontal = ConnectWithMainRoad(currentObject.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1].transform.position, roadPrefab);
                     roadHorizontal.transform.parent = horizontalContainer.transform;
                     roadHorizontal.name = "Horizontal Road";
                 }
 
-                if (currentObject.GetComponent<Identifier>().locationX < mapGen.size - 1)
+                if (currentObject.GetComponent<Identifier>().locationX < size - 1)
                 {
-                    roadVertical = ConnectWithMainRoad(currentObject.transform.position, mapGen.coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(mapGen.size))].transform.position, roadPrefab);
+                    roadVertical = ConnectWithMainRoad(currentObject.transform.position, coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))].transform.position, roadPrefab);
                     roadVertical.transform.parent = verticalContainer.transform;
                     roadVertical.name = "Vertical Road";
                 }
             }
 
-            if (currentObject.GetComponent<Identifier>().locationY < mapGen.size - 1 && currentObject.GetComponent<Identifier>().locationX < mapGen.size - 1)
+            if (currentObject.GetComponent<Identifier>().locationY < size - 1 && currentObject.GetComponent<Identifier>().locationX < size - 1)
             {
                 allGridSquares.Add(new GameObject[4] {
-                    mapGen.coordinateDictionary[currentObject.GetComponent<Identifier>().location],                              //One at original point
-                    mapGen.coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1],                          //One to right
-                    mapGen.coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(mapGen.size))],    //One down
-                    mapGen.coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(mapGen.size) + 1)] //One to lower right
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location],                              //One at original point
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location + 1],                          //One to right
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size))],    //One down
+                    coordinateDictionary[currentObject.GetComponent<Identifier>().location + (Convert.ToInt16(size) + 1)] //One to lower right
                 });
             }
         }

@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 
 public class CoordinateGenerator : MonoBehaviour {
-    public MapGenerator mapGen;
     public Vector2 ruralMapOffset;
     private Vector2[,] roadIntersections;
     public GameObject coordinatePrefab;
@@ -12,21 +11,16 @@ public class CoordinateGenerator : MonoBehaviour {
     [Tooltip("How much to offset country roads")]
     public float countryOffset;
 
-    private void Start()
+    public void CreateCoordinates(int size)
     {
-        mapGen = GetComponent<MapGenerator>();
-    }
-
-    public void CreateCoordinates()
-    {
-        roadIntersections = new Vector2[mapGen.size, mapGen.size];
+        roadIntersections = new Vector2[size, size];
         ruralMapOffset = new Vector2(UnityEngine.Random.Range(-10000f, 10000f), UnityEngine.Random.Range(-10000f, 10000f));
 
         for (int x = 0; x < roadIntersections.GetLength(0); x++)
         {
             for (int y = 0; y < roadIntersections.GetLength(1); y++)
             {
-                roadIntersections[x, y] = new Vector2(x - mapGen.size / 2, y - mapGen.size / 2);
+                roadIntersections[x, y] = new Vector2(x - size / 2, y - size / 2);
                 float currentLocationValue = Mathf.PerlinNoise(x + ruralMapOffset.x, y + ruralMapOffset.y);
 
                 if (currentLocationValue < 0.5)
@@ -37,7 +31,7 @@ public class CoordinateGenerator : MonoBehaviour {
         }
     }
 
-    public void CreateCoordinateGameObjects()
+    public void CreateCoordinateGameObjects(ref Dictionary<int, GameObject> coordinateDictionary)
     {
         int i = 0;
 
@@ -50,7 +44,7 @@ public class CoordinateGenerator : MonoBehaviour {
                 createdObject.GetComponent<Identifier>().locationY = y;
                 createdObject.GetComponent<Identifier>().location = i;
 
-                mapGen.coordinateDictionary.Add(i, createdObject);
+                coordinateDictionary.Add(i, createdObject);
                 i++;
             }
         }
