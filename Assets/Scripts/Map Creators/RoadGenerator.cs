@@ -4,18 +4,19 @@ using UnityEngine;
 using System;
 
 public class RoadGenerator : MonoBehaviour {
-    public float roadWidth;
-
-    public GameObject splitRoadContainer;
+    [Header("Main Road Generation")]
     public GameObject horizontalContainer;
     public GameObject verticalContainer;
-
     public GameObject roadPrefab;
-    public GameObject splitPrefab;
+
+    [Header("Side Road Generation")]
+    public float sideRoadWidth;
+    public GameObject sideRoadPrefab;
+    public GameObject sideRoadContainer;
 
     public List<GameObject[]> allGridSquares = new List<GameObject[]>();
 
-    public void CreateRoadGameObject(int size, ref Dictionary<int, GameObject> coordinateDictionary)
+    public void CreateRoadGameObject(int size, ref Dictionary<int, GameObject> coordinateDictionary, bool generateSideRoads)
     {
         GameObject[] allCoordinates = GameObject.FindGameObjectsWithTag("Coordinate");
 
@@ -52,10 +53,12 @@ public class RoadGenerator : MonoBehaviour {
             }
         }
 
-        foreach (GameObject[] currentGridCoordinates in allGridSquares)
-        {
-            ConnectWithSideRoad(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, 0.5f), Vector3.Lerp(currentGridCoordinates[2].transform.position, currentGridCoordinates[3].transform.position, 0.5f), splitPrefab, splitRoadContainer, roadWidth * 0.75f);
-            ConnectWithSideRoad(Vector3.Lerp(currentGridCoordinates[1].transform.position, currentGridCoordinates[3].transform.position, 0.5f), Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position, 0.5f), splitPrefab, splitRoadContainer, roadWidth * 0.75f);
+        if (generateSideRoads) {
+            foreach (GameObject[] currentGridCoordinates in allGridSquares)
+            {
+                ConnectWithSideRoad(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, 0.5f), Vector3.Lerp(currentGridCoordinates[2].transform.position, currentGridCoordinates[3].transform.position, 0.5f), sideRoadPrefab, sideRoadContainer, sideRoadWidth * 0.75f);
+                ConnectWithSideRoad(Vector3.Lerp(currentGridCoordinates[1].transform.position, currentGridCoordinates[3].transform.position, 0.5f), Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position, 0.5f), sideRoadPrefab, sideRoadContainer, sideRoadWidth * 0.75f);
+            }
         }
     }
 

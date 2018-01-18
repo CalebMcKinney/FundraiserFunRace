@@ -238,11 +238,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockCursor: 1
-  mouseSensitivity: 10
+  mouseSensitivity: 12.5
+  firstPersonSensitivity: 8.5
+  arrowKeySpeed: 4.5
   target: {fileID: 1616975867}
   dstFromTarget: 2
   rotationSmoothTime: 0.12
+  positionSmoothTime: 0.01
   pitchMinMax: {x: 5, y: 85}
+  firstPersonMinMax: {x: -50, y: 35}
+  zoomMinMax: {x: 0, y: 5}
+  scrollSensitivity: 2
 --- !u!1 &701030650
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,11 +321,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.049
+      value: 0.051
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.757
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
       propertyPath: m_LocalRotation.x
@@ -347,7 +353,7 @@ Prefab:
       objectReference: {fileID: 9100000, guid: 84923777d15d0c946951d9e5c750d62a, type: 2}
     - target: {fileID: 9500000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
       propertyPath: m_LocalScale.x
@@ -364,6 +370,10 @@ Prefab:
     - target: {fileID: 100000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
+      propertyPath: m_Icon
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
@@ -416,8 +426,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationTransitionTime: 0.1
+  gravity: -1.2
   walkSpeed: 2
   runSpeed: 6
+  velocityY: 0
   speedSmoothTime: 0.1
 --- !u!143 &1319514087
 CharacterController:
@@ -429,13 +441,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.3
+  m_Height: 5.38
+  m_Radius: 1
   m_SlopeLimit: 45
-  m_StepOffset: 0
+  m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.03, y: 3.4, z: 0.27}
 --- !u!1 &1362139869
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,7 +534,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eecd304cce20db489cd7159b02d0d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 14
+  size: 15
+  generateSideRoads: 0
+  centerOrigin: 0
+  clearCoordinates: 1
 --- !u!4 &1842028770
 Transform:
   m_ObjectHideFlags: 0
@@ -551,7 +566,7 @@ MonoBehaviour:
   ruralPrefabs: []
   suburbPrefabs: []
   urbanPrefabs: []
-  schoolPrefab: []
+  schoolPrefab: {fileID: 0}
 --- !u!114 &1842028772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,13 +578,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c785c27b8634c5744907d96331a8d673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadWidth: 1
-  splitRoadContainer: {fileID: 1011375059}
   horizontalContainer: {fileID: 513781812}
   verticalContainer: {fileID: 701030650}
   roadPrefab: {fileID: 1701628117926548, guid: 9263a22a08108764ca389faea64623d9, type: 2}
-  splitPrefab: {fileID: 1387924661034660, guid: 41893fb57c5a2eb4db1e00f947701b2b,
+  sideRoadWidth: 1
+  sideRoadPrefab: {fileID: 1387924661034660, guid: 41893fb57c5a2eb4db1e00f947701b2b,
     type: 2}
+  sideRoadContainer: {fileID: 1011375059}
 --- !u!114 &1842028773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,36 +599,8 @@ MonoBehaviour:
   ruralMapOffset: {x: 0, y: 0}
   coordinatePrefab: {fileID: 1760611299205508, guid: c66e4310980263949b2ec87532a5575b,
     type: 2}
-  roadDistance: 50
+  roadDistance: 25
   countryOffset: 0.5
---- !u!1 &1993940589
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1993940590}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1993940590
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1993940589}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2066603717
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +680,7 @@ Transform:
   m_GameObject: {fileID: 2066603717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_LocalScale: {x: 120, y: 1, z: 120}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4

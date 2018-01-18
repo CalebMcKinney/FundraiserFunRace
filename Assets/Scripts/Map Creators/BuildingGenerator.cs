@@ -7,7 +7,7 @@ public class BuildingGenerator : MonoBehaviour {
     public GameObject[] ruralPrefabs;
     public GameObject[] suburbPrefabs;
     public GameObject[] urbanPrefabs;
-    public GameObject[] schoolPrefab;
+    public GameObject schoolPrefab;
 
     private MapGenerator mapGen;
     private RoadGenerator roadGen;

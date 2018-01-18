@@ -11,7 +11,7 @@ public class CoordinateGenerator : MonoBehaviour {
     [Tooltip("How much to offset country roads")]
     public float countryOffset;
 
-    public void CreateCoordinates(int size)
+    public void CreateCoordinates(int size, bool centerOrigin)
     {
         roadIntersections = new Vector2[size, size];
         ruralMapOffset = new Vector2(UnityEngine.Random.Range(-10000f, 10000f), UnityEngine.Random.Range(-10000f, 10000f));
@@ -28,6 +28,11 @@ public class CoordinateGenerator : MonoBehaviour {
                     roadIntersections[x, y] = roadIntersections[x, y] + Vector2.one * UnityEngine.Random.Range(-1 * (Mathf.Lerp(1, 0, currentLocationValue * 2) * countryOffset), Mathf.Lerp(1, 0, currentLocationValue * 2) * countryOffset);
                 }
             }
+        }
+
+        if (centerOrigin)
+        {
+            roadIntersections[size/2, size / 2] = new Vector2(0, 0);
         }
     }
 

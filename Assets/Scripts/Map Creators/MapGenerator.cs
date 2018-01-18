@@ -10,6 +10,10 @@ public class MapGenerator : MonoBehaviour {
     [Tooltip("The number of grid squares on the map")] [Range(2, 100)]
     public int size;
 
+    public bool generateSideRoads;
+    public bool centerOrigin;
+    public bool clearCoordinates;
+
     public Dictionary<int, GameObject> coordinateDictionary = new Dictionary<int, GameObject>();
 
     private CoordinateGenerator coordGen;
@@ -27,8 +31,9 @@ public class MapGenerator : MonoBehaviour {
 
     public void GenerateRoads()
     {
-        coordGen.CreateCoordinates(size);
+        coordGen.CreateCoordinates(size, centerOrigin);
         coordGen.CreateCoordinateGameObjects(ref coordinateDictionary);
-        roadGen.CreateRoadGameObject(size, ref coordinateDictionary);
+        roadGen.CreateRoadGameObject(size, ref coordinateDictionary, generateSideRoads);
+        if(clearCoordinates) coordGen.ClearCoordinates();
     }
 }

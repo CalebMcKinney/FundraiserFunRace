@@ -10,6 +10,9 @@ public class CameraController : MonoBehaviour {
     public bool lockCursor;
 
     public float mouseSensitivity = 10;
+    public float firstPersonSensitivity;
+    public float arrowKeySpeed;
+
     public Transform target;
     public float dstFromTarget = 2;
 
@@ -17,7 +20,15 @@ public class CameraController : MonoBehaviour {
     Vector3 rotationSmoothVelocity;
     Vector3 currentRotation;
 
+    public float positionSmoothTime = 1.2f;
+    Vector3 positionVelocity;
+    Vector3 currentPosition;
+
     public Vector2 pitchMinMax = new Vector2(5, 85);
+    public Vector2 firstPersonMinMax = new Vector2(-50, 35);
+
+    public Vector2 zoomMinMax = new Vector2(0, 5);
+    public float scrollSensitivity;
 
     bool rightMouseDown;
 
@@ -30,26 +41,45 @@ public class CameraController : MonoBehaviour {
         }
     }
 
-    private void Update()
-    {
-        rightMouseDown = Input.GetMouseButton(1);
-    }
-
     void LateUpdate ()
     {
-        if (Input.GetMouseButton(1))
+        dstFromTarget += -Input.GetAxisRaw("Mouse ScrollWheel") * scrollSensitivity;
+        dstFromTarget = Mathf.Clamp(dstFromTarget, zoomMinMax.x, zoomMinMax.y);
+
+        if (Input.GetMouseButton(1) || dstFromTarget < 0.1)
         {
-            yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-            pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-            pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
+            yaw += Input.GetAxis("Mouse X") * ((dstFromTarget < 0.1) ? firstPersonSensitivity : mouseSensitivity);
+            pitch -= Input.GetAxis("Mouse Y") * ((dstFromTarget < 0.1) ? firstPersonSensitivity : mouseSensitivity);
 
-            currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotationSmoothVelocity, rotationSmoothTime);
-
-            Vector3 targetRotation = new Vector3(pitch, yaw);
-            transform.eulerAngles = currentRotation;
+            if (dstFromTarget < 0.1)
+            {
+                pitch = Mathf.Clamp(pitch, firstPersonMinMax.x, firstPersonMinMax.y);
+            }
+            else
+            {
+                pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
+            }
         }
 
-        transform.position = target.position - transform.forward * dstFromTarget;
+        if(dstFromTarget >= 0.1)
+        {
+            if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
+            {
+                yaw -= arrowKeySpeed;
+            }
+            if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
+            {
+                yaw += arrowKeySpeed;
+            }
+        }
 
+        currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch, yaw), ref rotationSmoothVelocity, rotationSmoothTime);
+        Vector3 targetRotation = new Vector3(pitch, yaw);
+        transform.eulerAngles = currentRotation;
+
+        Vector3 targetPosition = target.position - transform.forward * dstFromTarget;
+        currentPosition = Vector3.SmoothDamp(currentPosition, targetPosition, ref positionVelocity, positionSmoothTime);
+
+        transform.position = currentPosition;
     }
 }
