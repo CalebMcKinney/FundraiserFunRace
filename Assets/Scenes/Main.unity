@@ -522,7 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eecd304cce20db489cd7159b02d0d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 16
+  size: 14
 --- !u!4 &1842028770
 Transform:
   m_ObjectHideFlags: 0
@@ -563,7 +563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c785c27b8634c5744907d96331a8d673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadWidth: 10
+  roadWidth: 1
   splitRoadContainer: {fileID: 1011375059}
   horizontalContainer: {fileID: 513781812}
   verticalContainer: {fileID: 701030650}
@@ -584,8 +584,8 @@ MonoBehaviour:
   ruralMapOffset: {x: 0, y: 0}
   coordinatePrefab: {fileID: 1760611299205508, guid: c66e4310980263949b2ec87532a5575b,
     type: 2}
-  roadDistance: 14
-  countryOffset: 0
+  roadDistance: 50
+  countryOffset: 0.5
 --- !u!1 &1993940589
 GameObject:
   m_ObjectHideFlags: 0
