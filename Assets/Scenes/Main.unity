@@ -536,7 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 15
   generateSideRoads: 0
-  centerOrigin: 0
+  centerOrigin: 1
   clearCoordinates: 1
 --- !u!4 &1842028770
 Transform:
@@ -562,11 +562,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161c4602e5bd6ef4d83eb8b614503754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  housesPerRoad: 0
-  ruralPrefabs: []
-  suburbPrefabs: []
-  urbanPrefabs: []
+  housesPerRoad: 3
+  ruralPrefabs:
+  - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
+  - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
+  suburbPrefabs:
+  - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
+  - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
+  urbanPrefabs:
+  - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
+  - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
   schoolPrefab: {fileID: 0}
+  seedInput: 67.33.0/67.33.0/50.50.0/50.50.0/33.67.0/5.90.5/0.75.17/0.75.25/0.60.40/0.50.50/0.25.75
+  roadGen: {fileID: 1842028772}
 --- !u!114 &1842028772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +607,7 @@ MonoBehaviour:
   ruralMapOffset: {x: 0, y: 0}
   coordinatePrefab: {fileID: 1760611299205508, guid: c66e4310980263949b2ec87532a5575b,
     type: 2}
-  roadDistance: 25
+  roadDistance: 65
   countryOffset: 0.5
 --- !u!1 &2066603717
 GameObject:
