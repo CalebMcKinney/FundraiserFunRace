@@ -382,6 +382,34 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 92a4fa41829e4e247ac217d9056a25af, type: 3}
   m_PrefabInternal: {fileID: 881493894}
+--- !u!1 &1006951082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1006951083}
+  m_Layer: 0
+  m_Name: Rural Buildings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1006951083
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1006951082}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1773675487}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1011375059
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +532,65 @@ Transform:
   m_Father: {fileID: 974722674}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1686759088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1686759089}
+  m_Layer: 0
+  m_Name: Urban Buildings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1686759089
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686759088}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1773675487}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1773675486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1773675487}
+  m_Layer: 0
+  m_Name: Buildings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1773675487
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1773675486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1006951083}
+  - {fileID: 1686759089}
+  - {fileID: 2056812741}
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1842028768
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,13 +649,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161c4602e5bd6ef4d83eb8b614503754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  housesPerRoad: 3
+  housesPerRoad: 4
+  suburbContainer: {fileID: 2056812740}
+  ruralContainer: {fileID: 1006951082}
+  urbanContainer: {fileID: 1686759088}
   ruralPrefabs:
   - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
   - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
   suburbPrefabs:
   - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
   - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
+  - {fileID: 1724714344165724, guid: 5e963c0f940b6d249a462cfe9a9b6108, type: 2}
+  - {fileID: 1958480434531178, guid: 080fec6cd48227f4b9c8ce3b7bd6423f, type: 2}
+  - {fileID: 1331106724603272, guid: bb6781203fc002841b83dd702a651a90, type: 2}
+  - {fileID: 1002571643193666, guid: 78d102f28499e0c4baf60c0981dccdae, type: 2}
+  - {fileID: 1740822508449440, guid: f3c578331bb75ba42a7a5c79b02d9075, type: 2}
+  - {fileID: 1461195927626402, guid: a0b5ec4bda9e7b8488cf611cca1c0cf0, type: 2}
   urbanPrefabs:
   - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
   - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
@@ -609,6 +705,34 @@ MonoBehaviour:
     type: 2}
   roadDistance: 65
   countryOffset: 0.5
+--- !u!1 &2056812740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2056812741}
+  m_Layer: 0
+  m_Name: Suburban Buildings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2056812741
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2056812740}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1773675487}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2066603717
 GameObject:
   m_ObjectHideFlags: 0
