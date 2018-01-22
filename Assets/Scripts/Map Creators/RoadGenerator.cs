@@ -16,11 +16,9 @@ public class RoadGenerator : MonoBehaviour {
 
     public List<GameObject[]> allGridSquares = new List<GameObject[]>();
 
-    public void CreateRoadGameObject(int size, ref Dictionary<int, GameObject> coordinateDictionary, bool generateSideRoads)
+    public void CreateRoadGameObject(int size, GameObject[] coordinates, ref Dictionary<int, GameObject> coordinateDictionary, bool generateSideRoads)
     {
-        GameObject[] allCoordinates = GameObject.FindGameObjectsWithTag("Coordinate");
-
-        foreach (GameObject currentObject in allCoordinates)
+        foreach (GameObject currentObject in coordinates)
         {
             if (currentObject.GetComponent<Identifier>().location <= size * size)
             {

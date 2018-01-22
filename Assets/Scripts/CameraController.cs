@@ -80,7 +80,7 @@ public class CameraController : MonoBehaviour {
         Vector3 targetPosition = target.position - transform.forward * dstFromTarget;
         currentPosition = Vector3.SmoothDamp(currentPosition, targetPosition, ref positionVelocity, positionSmoothTime);
 
-        if(Physics.OverlapSphere(currentPosition, 0.1f).Length > 1)
+        /* if(Physics.OverlapSphere(currentPosition, 0.1f).Length > 1)
         {
             Debug.Log("something there");
         }
@@ -88,6 +88,7 @@ public class CameraController : MonoBehaviour {
         {
             Debug.Log("Nothing there");
         }
+        */
 
         transform.position = currentPosition;
     }
