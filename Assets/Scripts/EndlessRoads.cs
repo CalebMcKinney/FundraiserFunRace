@@ -27,6 +27,13 @@ public class EndlessRoads : MonoBehaviour {
     {
         CoordinateGenerator coordGen = gameObject.GetComponent<CoordinateGenerator>();
         chunkSize = coordGen.roadDistance;
+
+        foreach (Renderer i in buildingContainer.GetComponentsInChildren<Renderer>())
+        { i.enabled = false; }
+
+        foreach (Renderer i in roadContainer.GetComponentsInChildren<Renderer>())
+        { i.enabled = false; }
+
         NewChunkCenter(new Vector2(0,0));
 
         //buildingContainer = gameObject.GetComponent<BuildingGenerator>().suburbContainer.transform.parent.gameObject;
@@ -51,21 +58,16 @@ public class EndlessRoads : MonoBehaviour {
         List<GameObject> objectsInChunk = new List<GameObject>();
 
         Collider[] allCollidersInChunk = Physics.OverlapSphere(viewer.position, chunkViewDistance * chunkSize);
+        Collider[] renderersToCheck = Physics.OverlapSphere(viewer.position, chunkViewDistance * chunkSize * 1.5f);
 
         foreach (Collider currentCollider in allCollidersInChunk)
         {
             objectsInChunk.Add(currentCollider.gameObject);
         }
 
-        foreach (Renderer i in buildingContainer.GetComponentsInChildren<Renderer>())
+        foreach (Collider i in renderersToCheck)
         {
-            i.enabled = objectsInChunk.Contains(i.gameObject);
-        }
-
-        foreach (Renderer i in roadContainer.GetComponentsInChildren<Renderer>())
-        {
-
-            i.enabled = objectsInChunk.Contains(i.gameObject);
+            i.gameObject.GetComponentInChildren<Renderer>().enabled = objectsInChunk.Contains(i.gameObject) || i.transform.root.CompareTag("Important") || i.transform.root.CompareTag("Player") || i.transform.root.CompareTag("MainCamera") && !i.transform.root.CompareTag("Container");
         }
 
         objectsInPreviousChunk = objectsInChunk;
