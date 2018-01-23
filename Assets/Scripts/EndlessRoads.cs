@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EndlessRoads : MonoBehaviour {
@@ -13,23 +14,23 @@ public class EndlessRoads : MonoBehaviour {
     private Vector2 viewerPosition;
     public Vector2 viewerCoordinate;
 
-    public static List<GameObject> objectsInGame = new List<GameObject>();
+    private List<GameObject> objectsInGame = new List<GameObject>();
 
     public Dictionary<Vector2, GameObject[]> endlessCoordDictionary;
+
+    public GameObject buildingContainer;
+    public GameObject roadContainer;
+
+    private List<GameObject> objectsInPreviousChunk = new List<GameObject>();
 
     private void Start()
     {
         CoordinateGenerator coordGen = gameObject.GetComponent<CoordinateGenerator>();
         chunkSize = coordGen.roadDistance;
-    }
+        NewChunkCenter(new Vector2(0,0));
 
-    public void InitializeObjectList()
-    {
-        foreach(GameObject i in FindObjectsOfType<GameObject>())
-        {
-            objectsInGame.Clear();
-            objectsInGame.Add(i);
-        }
+        //buildingContainer = gameObject.GetComponent<BuildingGenerator>().suburbContainer.transform.parent.gameObject;
+        //roadContainer = gameObject.GetComponent<RoadGenerator>().horizontalContainer.transform.parent.gameObject;
     }
 
     private void Update()
@@ -49,25 +50,24 @@ public class EndlessRoads : MonoBehaviour {
     {
         List<GameObject> objectsInChunk = new List<GameObject>();
 
-        var allCollidersInChunk = Physics.OverlapBox(new Vector3(chunkCenter.x * chunkSize + chunkSize / 2, 0f, chunkCenter.y * chunkSize + chunkSize / 2), (Vector3.one / 2) * chunkViewDistance * chunkSize);
+        Collider[] allCollidersInChunk = Physics.OverlapSphere(viewer.position, chunkViewDistance * chunkSize);
+
         foreach (Collider currentCollider in allCollidersInChunk)
         {
             objectsInChunk.Add(currentCollider.gameObject);
         }
 
-        foreach (GameObject i in objectsInGame)
+        foreach (Renderer i in buildingContainer.GetComponentsInChildren<Renderer>())
         {
-            if(!i.CompareTag("Coordinate"))
-            {
-                if (objectsInChunk.Contains(i) || i.CompareTag("Important") || i.CompareTag("Player") || i.CompareTag("MainCamera") || i.CompareTag("MainCamera"))
-                {
-                    i.SetActive(true);
-                }
-                else
-                {
-                    i.SetActive(false);
-                }
-            }
+            i.enabled = objectsInChunk.Contains(i.gameObject);
         }
+
+        foreach (Renderer i in roadContainer.GetComponentsInChildren<Renderer>())
+        {
+
+            i.enabled = objectsInChunk.Contains(i.gameObject);
+        }
+
+        objectsInPreviousChunk = objectsInChunk;
     }
 }

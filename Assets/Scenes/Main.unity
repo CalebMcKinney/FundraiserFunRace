@@ -784,7 +784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eecd304cce20db489cd7159b02d0d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 15
+  size: 100
   viewDistance: 5
   generateSideRoads: 0
   centerOrigin: 1
@@ -880,9 +880,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6f3acbcb503814a80bf65a2052da70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkViewDistance: 5
+  chunkViewDistance: 2
   viewer: {fileID: 974722674}
   viewerCoordinate: {x: 0, y: 0}
+  buildingContainer: {fileID: 1773675486}
+  roadContainer: {fileID: 871806331}
 --- !u!1 &2056812740
 GameObject:
   m_ObjectHideFlags: 0
