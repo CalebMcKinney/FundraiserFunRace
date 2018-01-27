@@ -9,7 +9,6 @@ public class MapGenerator : MonoBehaviour {
 
     [Tooltip("The number of grid squares on the map")] [Range(2, 100)]
     public int size;
-    public int viewDistance;
 
     public bool generateSideRoads;
     public bool centerOrigin;
@@ -38,7 +37,10 @@ public class MapGenerator : MonoBehaviour {
         coordGen.CreateCoordinateGameObjects(ref coordinateDictionary);
         roadGen.CreateRoadGameObject(size, GameObject.FindGameObjectsWithTag("Coordinate"), ref coordinateDictionary, generateSideRoads);
         buildingGen.GenerateBuildings();
+        buildingGen.generateUrbanBuilding(Vector3.zero, Vector3.up * 90);
+        buildingGen.generateUrbanBuilding(Vector3.left * 2, Vector3.up * 90);
+        buildingGen.generateUrbanBuilding(Vector3.right * 2, Vector3.up * 90);
 
-        if(clearCoordinates) coordGen.ClearCoordinates();
+        if (clearCoordinates) coordGen.ClearCoordinates();
     }
 }

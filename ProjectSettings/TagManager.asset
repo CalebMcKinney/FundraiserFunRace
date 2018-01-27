@@ -8,6 +8,7 @@ TagManager:
   - Road
   - MapGenerator
   - Important
+  - Container
   layers:
   - Default
   - TransparentFX

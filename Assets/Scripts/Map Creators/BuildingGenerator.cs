@@ -4,7 +4,15 @@ using UnityEngine;
 using System;
 
 public class BuildingGenerator : MonoBehaviour {
+
+    public CityPrefabs cityPrefabs;
+
+    [Header("Suburbs")]
+
     public int housesPerRoad;
+
+    [Space(5)]
+
     public GameObject suburbContainer;
     public GameObject ruralContainer;
     public GameObject urbanContainer;
@@ -14,27 +22,16 @@ public class BuildingGenerator : MonoBehaviour {
     public GameObject[] ruralPrefabs;
     public GameObject[] suburbPrefabs;
     public GameObject[] urbanPrefabs;
-    public GameObject schoolPrefab;
 
-    public string seedInput;
-    public List<int[]> seedInputSplit = new List<int[]>();
+    [Space(5)]
+
+    public GameObject schoolPrefab;
 
     private MapGenerator mapGen;
     public RoadGenerator roadGen;
 
-    private void Start()
-    {
-        foreach(string i in seedInput.Split('/'))
-        {
-            List<int> temp = new List<int>();
-            foreach(string x in i.Split('.'))
-            {
-                temp.Add(Convert.ToInt16(x));
-            }
+    public int maxHeight;
 
-            seedInputSplit.Add(temp.ToArray());
-        }
-    }
 
     public GameObject buildingAtVector3(float urban, Vector3 location, Vector3 rotation)
     {
@@ -66,6 +63,55 @@ public class BuildingGenerator : MonoBehaviour {
         var temp = Instantiate(buildingToInstantiate, location, Quaternion.Euler(rotation));
         temp.transform.parent = chosenContainer.transform;
         return temp;
+    }
+
+    public GameObject generateUrbanBuilding(Vector3 position, Vector3 rotation)
+    {
+        GameObject tempParent = Instantiate(urbanContainer, Vector3.zero, Quaternion.identity);
+        tempParent.name = "Building";
+
+        bool roundShape = UnityEngine.Random.Range(0, 2) == 0;  //50:50 chance round or square, max value is exclusive, so it will never be 2
+        bool useAwning = UnityEngine.Random.Range(0, 3) == 0;   //1 in 3 chance of no awning in square;
+
+        int buildingHeight = UnityEngine.Random.Range(2, Mathf.Max(maxHeight, 4));
+        int awningHeight = UnityEngine.Random.Range(1, 3);
+
+        Vector3 oldRotation = rotation;
+        rotation += roundShape ? Vector3.up * 45f : Vector3.zero;
+        UrbanPrefabList prefabList = roundShape ? cityPrefabs.RoundPrefabs : cityPrefabs.SquarePrefabs;
+
+        GameObject door = Instantiate(prefabList.DoorPrefabs[UnityEngine.Random.Range(0, prefabList.DoorPrefabs.Length)], position, Quaternion.Euler(rotation));
+        door.transform.parent = tempParent.transform;
+        door.transform.name = "Door";
+
+        if (useAwning)
+        {
+            for (int i = 0; i <= awningHeight; i++)
+            {
+                GameObject lowerWall = Instantiate(prefabList.WindowPrefabs[UnityEngine.Random.Range(0, prefabList.WindowPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.Euler(rotation));
+                lowerWall.transform.parent = tempParent.transform;
+                lowerWall.transform.name = "Lower Wall";
+            }
+
+            GameObject awning = Instantiate(cityPrefabs.AwningPrefabs[UnityEngine.Random.Range(0, cityPrefabs.AwningPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.Euler(oldRotation));
+            awning.transform.parent = tempParent.transform;
+            awning.transform.name = "Awning";
+        }
+
+        float offset = useAwning ? 0.62f : 0f;
+
+        for (int i = 0; i <= buildingHeight; i++)
+        {
+            GameObject wall = Instantiate(prefabList.WindowPrefabs[UnityEngine.Random.Range(0, prefabList.WindowPrefabs.Length)], position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.Euler(rotation));
+            wall.transform.parent = tempParent.transform;
+            wall.transform.name = "Wall";
+        }
+
+        GameObject roof = Instantiate(prefabList.RoofPrefabs[UnityEngine.Random.Range(0, prefabList.RoofPrefabs.Length)], position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.Euler(rotation));
+        roof.transform.parent = tempParent.transform;
+        roof.transform.name = "Roof";
+
+        return tempParent;
     }
 
     public void GenerateBuildings()
