@@ -667,6 +667,27 @@ MonoBehaviour:
     - {fileID: 1974131592130728, guid: c481a0dc09ad7cb459163b965356d641, type: 2}
     - {fileID: 1514509131539188, guid: 968d4975da8a7684eb56e427bf19885f, type: 2}
   housesPerRoad: 0
+  UrbanBoundsValues:
+  - ruralValue: 30
+    urbanValue: 0
+  - ruralValue: 20
+    urbanValue: 0
+  - ruralValue: 10
+    urbanValue: 0
+  - ruralValue: 5
+    urbanValue: 10
+  - ruralValue: 0
+    urbanValue: 10
+  - ruralValue: 0
+    urbanValue: 20
+  - ruralValue: 0
+    urbanValue: 30
+  - ruralValue: 0
+    urbanValue: 40
+  - ruralValue: 0
+    urbanValue: 50
+  - ruralValue: 0
+    urbanValue: 80
   suburbContainer: {fileID: 2056812740}
   ruralContainer: {fileID: 1006951082}
   urbanContainer: {fileID: 1686759088}
