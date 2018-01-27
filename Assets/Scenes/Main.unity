@@ -634,9 +634,11 @@ MonoBehaviour:
       - {fileID: 1179984820415466, guid: a21769a79d2449a40b899d00e653e3f5, type: 2}
       - {fileID: 1850820690675648, guid: fa19066b398432e4f9dc05111cdb4ccc, type: 2}
       WindowPrefabs:
-      - {fileID: 1729533394850104, guid: 41bb601bc64a4a042af2fe1e0e4b0198, type: 2}
+      - {fileID: 1648097669587510, guid: 50adb7053ab260d4cab84bc4665379ff, type: 2}
       - {fileID: 1110363782472326, guid: 768375476ad5f5b44aae1ef672198d8e, type: 2}
       - {fileID: 1093084758470974, guid: 18d71ee622b573f479301d4830032b1f, type: 2}
+      - {fileID: 1353104884751796, guid: b50d49bcc1628f04b858c8fd7887b15a, type: 2}
+      - {fileID: 1715232414983568, guid: 7bdd9ed29fcb3054ab6bf661d34fd709, type: 2}
       RoofPrefabs:
       - {fileID: 1816445213076898, guid: cb9ab3e40ce5d264aa5fd54a5c4556fc, type: 2}
       - {fileID: 1326482976284818, guid: 53da111ae53102141a82390b5ae2c775, type: 2}
@@ -664,7 +666,6 @@ MonoBehaviour:
     - {fileID: 1379821503678482, guid: 26d388c3519ec0e48b718bcdf5245bbc, type: 2}
     - {fileID: 1974131592130728, guid: c481a0dc09ad7cb459163b965356d641, type: 2}
     - {fileID: 1514509131539188, guid: 968d4975da8a7684eb56e427bf19885f, type: 2}
-    - {fileID: 1353104884751796, guid: b50d49bcc1628f04b858c8fd7887b15a, type: 2}
   housesPerRoad: 0
   suburbContainer: {fileID: 2056812740}
   ruralContainer: {fileID: 1006951082}

@@ -37,9 +37,7 @@ public class MapGenerator : MonoBehaviour {
         coordGen.CreateCoordinateGameObjects(ref coordinateDictionary);
         roadGen.CreateRoadGameObject(size, GameObject.FindGameObjectsWithTag("Coordinate"), ref coordinateDictionary, generateSideRoads);
         buildingGen.GenerateBuildings();
-        buildingGen.generateUrbanBuilding(Vector3.zero, Vector3.up * 90);
-        buildingGen.generateUrbanBuilding(Vector3.left * 2, Vector3.up * 90);
-        buildingGen.generateUrbanBuilding(Vector3.right * 2, Vector3.up * 90);
+        buildingGen.generateUrbanBuilding(Vector3.zero, Vector3.zero, false);
 
         if (clearCoordinates) coordGen.ClearCoordinates();
     }

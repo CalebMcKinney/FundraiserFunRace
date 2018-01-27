@@ -65,19 +65,17 @@ public class BuildingGenerator : MonoBehaviour {
         return temp;
     }
 
-    public GameObject generateUrbanBuilding(Vector3 position, Vector3 rotation)
+    public GameObject generateUrbanBuilding(Vector3 position, Vector3 rotation, bool roundShape)
     {
         GameObject tempParent = Instantiate(urbanContainer, Vector3.zero, Quaternion.identity);
         tempParent.name = "Building";
 
-        bool roundShape = UnityEngine.Random.Range(0, 2) == 0;  //50:50 chance round or square, max value is exclusive, so it will never be 2
-        bool useAwning = UnityEngine.Random.Range(0, 3) == 0;   //1 in 3 chance of no awning in square;
+        //bool roundShape = UnityEngine.Random.Range(0, 2) == 0;  //50:50 chance round or square, max value is exclusive, so it will never be 2
+        bool useAwning = UnityEngine.Random.Range(0, 3) == 0 && !roundShape;   //1 in 3 chance of no awning in square;
 
         int buildingHeight = UnityEngine.Random.Range(2, Mathf.Max(maxHeight, 4));
-        int awningHeight = UnityEngine.Random.Range(1, 3);
+        int awningHeight = UnityEngine.Random.Range(1, 2);
 
-        Vector3 oldRotation = rotation;
-        rotation += roundShape ? Vector3.up * 45f : Vector3.zero;
         UrbanPrefabList prefabList = roundShape ? cityPrefabs.RoundPrefabs : cityPrefabs.SquarePrefabs;
 
         GameObject door = Instantiate(prefabList.DoorPrefabs[UnityEngine.Random.Range(0, prefabList.DoorPrefabs.Length)], position, Quaternion.Euler(rotation));
@@ -93,12 +91,12 @@ public class BuildingGenerator : MonoBehaviour {
                 lowerWall.transform.name = "Lower Wall";
             }
 
-            GameObject awning = Instantiate(cityPrefabs.AwningPrefabs[UnityEngine.Random.Range(0, cityPrefabs.AwningPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.Euler(oldRotation));
+            GameObject awning = Instantiate(cityPrefabs.AwningPrefabs[UnityEngine.Random.Range(0, cityPrefabs.AwningPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.Euler(rotation));
             awning.transform.parent = tempParent.transform;
             awning.transform.name = "Awning";
         }
 
-        float offset = useAwning ? 0.62f : 0f;
+        float offset = useAwning ? 0.619f : 0f;
 
         for (int i = 0; i <= buildingHeight; i++)
         {
@@ -107,7 +105,10 @@ public class BuildingGenerator : MonoBehaviour {
             wall.transform.name = "Wall";
         }
 
-        GameObject roof = Instantiate(prefabList.RoofPrefabs[UnityEngine.Random.Range(0, prefabList.RoofPrefabs.Length)], position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.Euler(rotation));
+        GameObject chosenPrefab = prefabList.RoofPrefabs[UnityEngine.Random.Range(0, prefabList.RoofPrefabs.Length)];
+        GameObject roof = Instantiate(chosenPrefab, position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.Euler(rotation));
+
+        roof.transform.localPosition += chosenPrefab.transform.position;
         roof.transform.parent = tempParent.transform;
         roof.transform.name = "Roof";
 
