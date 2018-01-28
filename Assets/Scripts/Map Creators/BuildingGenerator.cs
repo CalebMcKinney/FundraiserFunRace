@@ -38,28 +38,29 @@ public class BuildingGenerator : MonoBehaviour {
 
     public GameObject buildingAtVector3(Vector3 location, Vector3 rotation)
     {
-        Vector3 noise = location / coordGen.roadDistance;
+        /* Vector3 noise = location / coordGen.roadDistance;
         float coordinateNoise = Mathf.PerlinNoise(coordGen.ruralMapOffset.x + noise.x, coordGen.ruralMapOffset.y + noise.z);
         coordinateNoise = 10 * Mathf.Clamp01(coordinateNoise);
 
         int areaRuralityInt = Mathf.FloorToInt(coordinateNoise);
 
         Debug.Log(areaRuralityInt);
+        
 
         int ruralValue = UrbanBoundsValues[areaRuralityInt].ruralValue;
         int urbanValue = UrbanBoundsValues[areaRuralityInt].urbanValue;
-
+        */
         int chosenPercent = UnityEngine.Random.Range(0, 100);
 
         GameObject chosenContainer;
         GameObject tempGameObject;
 
-        if(chosenPercent >= 100 - ruralValue)
+        if(chosenPercent >= 100 - 15)
         {
             tempGameObject = ruralPrefabs[0]; //UnityEngine.Random.Range(0,ruralPrefabs.Length)];
             chosenContainer = ruralContainer;
         }
-        else if(chosenPercent <= urbanValue)
+        else if(chosenPercent <= 30)
         {
             tempGameObject = generateUrbanBuilding(location, rotation, false);
             chosenContainer = urbanContainer;
@@ -130,8 +131,6 @@ public class BuildingGenerator : MonoBehaviour {
         {
             for (int i = 0; i < housesPerRoad; i++)
             {
-                Mathf.PerlinNoise(currentGridCoordinates[0].transform.position.x, currentGridCoordinates[0].transform.position.y);
-
                 buildingAtVector3(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1)), FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position));
                 buildingAtVector3(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1)), FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position) + new Vector3(0f, 180f));
 

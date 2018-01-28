@@ -508,6 +508,48 @@ Transform:
   m_Father: {fileID: 974722674}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1654971226
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4174390342458472, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0b6299c7bd878bf4aae9efd72b3882c1, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1686759088
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +640,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eecd304cce20db489cd7159b02d0d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 19
+  size: 3
   generateSideRoads: 0
   centerOrigin: 1
   clearCoordinates: 1
@@ -626,6 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 161c4602e5bd6ef4d83eb8b614503754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coordGen: {fileID: 1842028773}
   cityPrefabs:
     SquarePrefabs:
       DoorPrefabs:
@@ -666,7 +709,6 @@ MonoBehaviour:
     - {fileID: 1379821503678482, guid: 26d388c3519ec0e48b718bcdf5245bbc, type: 2}
     - {fileID: 1974131592130728, guid: c481a0dc09ad7cb459163b965356d641, type: 2}
     - {fileID: 1514509131539188, guid: 968d4975da8a7684eb56e427bf19885f, type: 2}
-  housesPerRoad: 0
   UrbanBoundsValues:
   - ruralValue: 30
     urbanValue: 0
@@ -688,6 +730,7 @@ MonoBehaviour:
     urbanValue: 50
   - ruralValue: 0
     urbanValue: 80
+  housesPerRoad: 4
   suburbContainer: {fileID: 2056812740}
   ruralContainer: {fileID: 1006951082}
   urbanContainer: {fileID: 1686759088}
@@ -706,9 +749,10 @@ MonoBehaviour:
   urbanPrefabs:
   - {fileID: 1176599644119376, guid: 215628dd742fe3a4788a8f716797a5d0, type: 2}
   - {fileID: 1256704773131526, guid: b821699e27fe59b47915b8263d713571, type: 2}
-  schoolPrefab: {fileID: 103238, guid: 010ab566711b9084fad5f5ed2c31d831, type: 2}
+  schoolPrefab: {fileID: 1046736742218264, guid: 0b6299c7bd878bf4aae9efd72b3882c1,
+    type: 2}
   roadGen: {fileID: 1842028772}
-  maxHeight: 0
+  maxHeight: 4
 --- !u!114 &1842028772
 MonoBehaviour:
   m_ObjectHideFlags: 0
