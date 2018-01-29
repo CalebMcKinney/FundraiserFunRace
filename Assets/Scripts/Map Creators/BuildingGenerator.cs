@@ -7,6 +7,10 @@ public class BuildingGenerator : MonoBehaviour {
 
     public CoordinateGenerator coordGen;
 
+    public float buildingStartingHeight = 7f;
+    public float buildingAmplitude = 5f;
+    public float buildingSize = 5f;
+
     public CityPrefabs cityPrefabs;
     public RandValues[] UrbanBoundsValues;
 
@@ -29,12 +33,19 @@ public class BuildingGenerator : MonoBehaviour {
     [Space(5)]
 
     public GameObject schoolPrefab;
+    public GameObject cube;
+
+    public GameObject test;
 
     private MapGenerator mapGen;
     public RoadGenerator roadGen;
 
     public int maxHeight;
 
+    private void Start()
+    {
+        Instantiate(test).GetComponent<MeshFilter>().sharedMesh = randomMeshGen();
+    }
 
     public GameObject buildingAtVector3(Vector3 location, Vector3 rotation)
     {
@@ -57,12 +68,18 @@ public class BuildingGenerator : MonoBehaviour {
 
         if(chosenPercent >= 100 - 15)
         {
-            tempGameObject = ruralPrefabs[0]; //UnityEngine.Random.Range(0,ruralPrefabs.Length)];
+            tempGameObject = Instantiate(cube, location, Quaternion.Euler(rotation));
+            tempGameObject.transform.localScale = new Vector3(1f, (buildingStartingHeight + (Mathf.PerlinNoise(location.x, location.z) * buildingAmplitude)), 1f);
+            tempGameObject.transform.GetChild(0).localScale = new Vector3(buildingSize, 1f, buildingSize);
+
             chosenContainer = ruralContainer;
         }
         else if(chosenPercent <= 30)
         {
-            tempGameObject = generateUrbanBuilding(location, rotation, false);
+            tempGameObject = Instantiate(cube, location, Quaternion.Euler(rotation));
+            tempGameObject.transform.localScale = new Vector3(1f, (buildingStartingHeight + (Mathf.PerlinNoise(location.x, location.z) * buildingAmplitude)), 1f);
+            tempGameObject.transform.GetChild(0).localScale = new Vector3(buildingSize, 1f, buildingSize);
+
             chosenContainer = urbanContainer;
         }
         else
@@ -123,6 +140,32 @@ public class BuildingGenerator : MonoBehaviour {
         roof.transform.name = "Roof";
 
         return tempParent;
+    }
+
+    public Mesh randomMeshGen()
+    {
+        GameObject obj = generateUrbanBuilding(Vector3.zero, Vector3.zero, false);
+
+        MeshFilter[] filters = obj.GetComponentsInChildren<MeshFilter>();
+        Mesh finalMesh = new Mesh();
+        CombineInstance[] combiners = new CombineInstance[filters.Length];
+
+        for (int i = 0; i < filters.Length; i++)
+        {
+            if(filters[i].transform == obj.transform)
+            {
+                continue;
+            }
+
+            combiners[i].subMeshIndex = 0;
+            combiners[i].mesh = filters[i].sharedMesh;
+            combiners[i].transform = filters[i].transform.localToWorldMatrix;
+        }
+
+        finalMesh.CombineMeshes(combiners);
+        Destroy(obj);
+
+        return finalMesh;
     }
 
     public void GenerateBuildings()

@@ -35,14 +35,14 @@ public class PoolManager : MonoBehaviour {
 		}
 	}
 
-	public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation) {
+	public void ReuseObject(GameObject prefab, Vector3 position, Quaternion rotation, Vector3 size) {
 		int poolKey = prefab.GetInstanceID ();
 
 		if (poolDictionary.ContainsKey (poolKey)) {
-			ObjectInstance objectToReuse = poolDictionary [poolKey].Dequeue ();
-			poolDictionary [poolKey].Enqueue (objectToReuse);
+			ObjectInstance objectToReuse = poolDictionary[poolKey].Dequeue ();
+			poolDictionary[poolKey].Enqueue (objectToReuse);
 
-			objectToReuse.Reuse (position, rotation);
+			objectToReuse.Reuse(position, rotation, size);
 		}
 	}
 
@@ -52,27 +52,18 @@ public class PoolManager : MonoBehaviour {
 		Transform transform;
 
 		bool hasPoolObjectComponent;
-		PoolObject poolObjectScript;
 
 		public ObjectInstance(GameObject objectInstance) {
 			gameObject = objectInstance;
 			transform = gameObject.transform;
 			gameObject.SetActive(false);
-
-			if (gameObject.GetComponent<PoolObject>()) {
-				hasPoolObjectComponent = true;
-				poolObjectScript = gameObject.GetComponent<PoolObject>();
-			}
 		}
 
-		public void Reuse(Vector3 position, Quaternion rotation) {
+        public void Reuse(Vector3 position, Quaternion rotation, Vector3 size) {
 			gameObject.SetActive (true);
 			transform.position = position;
 			transform.rotation = rotation;
-
-			if (hasPoolObjectComponent) {
-				poolObjectScript.OnObjectReuse ();
-			}
+            transform.localScale = size;
 		}
 
 		public void SetParent(Transform parent) {

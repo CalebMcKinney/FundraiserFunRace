@@ -19,14 +19,14 @@ public class MapGenerator : MonoBehaviour {
     private CoordinateGenerator coordGen;
     private RoadGenerator roadGen;
     private BuildingGenerator buildingGen;
-    private EndlessRoads endlessRoads;
+    private ViewDist viewDist;
 
     private void Start()
     {
         coordGen = gameObject.GetComponent<CoordinateGenerator>();
         roadGen = gameObject.GetComponent<RoadGenerator>();
         buildingGen = gameObject.GetComponent<BuildingGenerator>();
-        endlessRoads = gameObject.GetComponent<EndlessRoads>();
+        viewDist = gameObject.GetComponent<ViewDist>();
 
         GenerateRoads();
     }

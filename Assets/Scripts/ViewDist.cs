@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EndlessRoads : MonoBehaviour {
+public class ViewDist : MonoBehaviour {
 
     //number of chunks the player can see
     public float chunkViewDistance;
@@ -14,14 +14,9 @@ public class EndlessRoads : MonoBehaviour {
     private Vector2 viewerPosition;
     public Vector2 viewerCoordinate;
 
-    private List<GameObject> objectsInGame = new List<GameObject>();
-
-    public Dictionary<Vector2, GameObject[]> endlessCoordDictionary;
-
     public GameObject buildingContainer;
     public GameObject roadContainer;
 
-    private List<GameObject> objectsInPreviousChunk = new List<GameObject>();
 
     private void Start()
     {
@@ -69,7 +64,5 @@ public class EndlessRoads : MonoBehaviour {
         {
             i.gameObject.GetComponentInChildren<Renderer>().enabled = objectsInChunk.Contains(i.gameObject) || i.transform.root.CompareTag("Important") || i.transform.root.CompareTag("Player") || i.transform.root.CompareTag("MainCamera") && !i.transform.root.CompareTag("Container");
         }
-
-        objectsInPreviousChunk = objectsInChunk;
     }
 }
