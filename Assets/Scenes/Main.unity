@@ -564,8 +564,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a40005fbd112cca4e88f05fdd2bb34b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1826821458298658, guid: 829e9c143339a7240a86dee11640c9cb, type: 2}
-  viewDist: {fileID: 0}
+  uniqueBuildingNumber: 10
+  buildingIDs: 
+  roads: {fileID: 1701628117926548, guid: 9263a22a08108764ca389faea64623d9, type: 2}
+  mapGen: {fileID: 1842028769}
+  roadGen: {fileID: 1842028772}
+  buildingGen: {fileID: 1842028771}
+  coordGen: {fileID: 0}
+  chunkViewDistance: 0
+  viewer: {fileID: 0}
+  viewerCoordinate: {x: 0, y: 0}
+  buildingContainer: {fileID: 0}
+  roadContainer: {fileID: 0}
 --- !u!4 &1723780966
 Transform:
   m_ObjectHideFlags: 0
@@ -815,7 +825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6f3acbcb503814a80bf65a2052da70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chunkViewDistance: 2
+  chunkViewDistance: 0
   viewer: {fileID: 974722674}
   viewerCoordinate: {x: 0, y: 0}
   buildingContainer: {fileID: 1773675486}

@@ -44,6 +44,7 @@ public class BuildingGenerator : MonoBehaviour {
 
     private void Start()
     {
+        //generateUrbanBuilding(Vector3.zero, Vector3.zero, false);
         Instantiate(test).GetComponent<MeshFilter>().sharedMesh = randomMeshGen();
     }
 
@@ -146,25 +147,18 @@ public class BuildingGenerator : MonoBehaviour {
     {
         GameObject obj = generateUrbanBuilding(Vector3.zero, Vector3.zero, false);
 
-        MeshFilter[] filters = obj.GetComponentsInChildren<MeshFilter>();
-        Mesh finalMesh = new Mesh();
-        CombineInstance[] combiners = new CombineInstance[filters.Length];
-
-        for (int i = 0; i < filters.Length; i++)
+        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
+        CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+        for (int i = 0; i < meshFilters.Length; i++)
         {
-            if(filters[i].transform == obj.transform)
-            {
-                continue;
-            }
-
-            combiners[i].subMeshIndex = 0;
-            combiners[i].mesh = filters[i].sharedMesh;
-            combiners[i].transform = filters[i].transform.localToWorldMatrix;
+            combine[i].mesh = meshFilters[i].sharedMesh;
+            combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
         }
 
-        finalMesh.CombineMeshes(combiners);
-        Destroy(obj);
+        Mesh finalMesh = new Mesh();
+        finalMesh.CombineMeshes(combine);
 
+        Destroy(obj);
         return finalMesh;
     }
 
