@@ -11,6 +11,7 @@ public class EndlessGeneration : MonoBehaviour
     public Vector2[,] allCoordinates;
 
     public GameObject roads;
+    public GameObject roadPrefab;
 
     public MapGenerator mapGen;
     public RoadGenerator roadGen;
@@ -99,13 +100,57 @@ public class EndlessGeneration : MonoBehaviour
         {
             for (int x = 0; x < newCoordinateLocations.GetLongLength(1); x++)
             {
-                var newCoordObj = Instantiate(coordinate, new Vector3(newCoordinateLocations[x, y].x, 0f, newCoordinateLocations[x, y].y), Quaternion.identity);
-                coordinateDictionary.Add(new Vector2(x + chunkCenter.x, y + chunkCenter.y), newCoordObj);
+                var newCoordObj = Instantiate(coordinate, new Vector3(newCoordinateLocations[x, y].x, 0, newCoordinateLocations[x, y].y), Quaternion.identity);
 
-                newCoordObj.GetComponent<Identifier>().connectedTo
+                if(!coordinateDictionary.ContainsKey(new Vector2(x + chunkCenter.x, y + chunkCenter.y)))
+                {
+                    coordinateDictionary.Add(new Vector2(x + chunkCenter.x, y + chunkCenter.y), newCoordObj);
+                }
 
-                Vector3 pos1 = coordinateDictionary.ContainsKey(new Vector2(x + chunkCenter.x + 1, y + chunkCenter.y)) ? new Vector3(x + chunkCenter.x, y + chunkCenter.y) : new Vector3();
-                RoadGenerator.ConnectWithMainRoad()
+                //Check all sides of the current coordinate
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 coordToCheck = new Vector2(x + chunkCenter.x, y + chunkCenter.y);
+                    Vector3 pos1 = new Vector3(coordToCheck.x, 0, coordToCheck.y);
+
+                    switch (i)
+                    {
+                        default:
+                            coordToCheck += new Vector2(1, 0);
+                            break;
+                        case 1:
+                            coordToCheck += new Vector2(-1, 0);
+                            break;
+                        case 2:
+                            coordToCheck += new Vector2(0, 1);
+                            break;
+                        case 3:
+                            coordToCheck += new Vector2(0, -1);
+                            break;
+                    }
+
+                    if(coordinateDictionary.ContainsKey(coordToCheck))
+                    {
+                        //Continue stops everything below this condition from happening if this condition is true
+                        if (coordinateDictionary[coordToCheck].GetComponent<Identifier>().connectedTo.Contains(new Vector2(x + chunkCenter.x, y + chunkCenter.y)))
+                        {
+                            continue;
+                        }
+
+                        GameObject objectOverOne = coordinateDictionary[coordToCheck];
+
+                        Vector3 pos2 = objectOverOne.transform.position;
+
+                        RoadGenerator.ConnectWithMainRoad(pos1, pos2, roadPrefab);
+
+                        Identifier coordID = objectOverOne.GetComponent<Identifier>();
+
+                        if (coordID != null)
+                        {
+                            coordID.connectedTo.Add(coordToCheck);
+                        }
+                    }
+                }
             }
         }
 
