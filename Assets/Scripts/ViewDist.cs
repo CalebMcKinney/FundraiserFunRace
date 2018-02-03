@@ -6,7 +6,7 @@ using UnityEngine;
 public class ViewDist : MonoBehaviour {
 
     //number of chunks the player can see
-    public float chunkViewDistance;
+    public int chunkViewDistance;
     float chunkSize;
 
     public Transform viewer;

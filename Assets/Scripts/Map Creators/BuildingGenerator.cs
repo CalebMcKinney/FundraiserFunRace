@@ -51,6 +51,7 @@ public class BuildingGenerator : MonoBehaviour {
 
     public void InitializeUniqueBuildings()
     {
+<<<<<<< HEAD
         generatedBuildings = new GameObject[uniqueBuildings + 1];
 
         GameObject generatedBuildingContainer = new GameObject("BUILDING PREFABS");
@@ -77,6 +78,10 @@ public class BuildingGenerator : MonoBehaviour {
             Destroy(i);
             Destroy(i.transform.root.gameObject);
         }
+=======
+        //generateUrbanBuilding(Vector3.zero, Vector3.zero, false);
+        Instantiate(test).GetComponent<MeshFilter>().sharedMesh = randomMeshGen();
+>>>>>>> 3b9e55fd1585932c0f32cf1f592d56cab016c422
     }
 
     public GameObject buildingAtVector3(Vector3 location, Vector3 rotation)
@@ -170,25 +175,18 @@ public class BuildingGenerator : MonoBehaviour {
     {
         GameObject obj = generateUrbanBuilding(Vector3.zero, Vector3.zero, false);
 
-        MeshFilter[] filters = obj.GetComponentsInChildren<MeshFilter>();
-        Mesh finalMesh = new Mesh();
-        CombineInstance[] combiners = new CombineInstance[filters.Length];
-
-        for (int i = 0; i < filters.Length; i++)
+        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshFilter>();
+        CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+        for (int i = 0; i < meshFilters.Length; i++)
         {
-            if(filters[i].transform == obj.transform)
-            {
-                continue;
-            }
-
-            combiners[i].subMeshIndex = 0;
-            combiners[i].mesh = filters[i].sharedMesh;
-            combiners[i].transform = filters[i].transform.localToWorldMatrix;
+            combine[i].mesh = meshFilters[i].sharedMesh;
+            combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
         }
 
-        finalMesh.CombineMeshes(combiners);
-        Destroy(obj);
+        Mesh finalMesh = new Mesh();
+        finalMesh.CombineMeshes(combine);
 
+        Destroy(obj);
         return finalMesh;
     }
 
