@@ -37,36 +37,60 @@ public class BuildingGenerator : MonoBehaviour {
 
     public GameObject test;
 
-    private MapGenerator mapGen;
     public RoadGenerator roadGen;
 
     public int maxHeight;
 
-    private void Start()
+    //public int[] buildingIDs;
+    public GameObject[] generatedBuildings;
+    public GameObject[] blankBuildingList;
+    public int uniqueBuildings;
+
+    public float buildingDistFromRoad;
+    public float urbanBuildingSize;
+
+    public void InitializeUniqueBuildings()
     {
-        Instantiate(test).GetComponent<MeshFilter>().sharedMesh = randomMeshGen();
+        generatedBuildings = new GameObject[uniqueBuildings + 1];
+
+        GameObject generatedBuildingContainer = new GameObject("BUILDING PREFABS");
+        generatedBuildingContainer.transform.localPosition = new Vector3(0f, 0f, buildingDistFromRoad);
+
+
+        Vector3 pos = new Vector3((-1.25f / 1.75f) * buildingSize, 0f, (-1.35f / 1.75f) * buildingSize);
+
+        for (int i = 0; i <= uniqueBuildings; i++)
+        {
+            GameObject newBuilding = generateUrbanBuilding(pos, Vector3.zero, false);
+            newBuilding.transform.parent = generatedBuildingContainer.transform;
+
+            generatedBuildings[i] = newBuilding;
+        }
+
+        blankBuildingList = generatedBuildings;
+    }
+
+    public void ClearDefaultBuildings()
+    {
+        foreach(GameObject i in blankBuildingList)
+        {
+            Destroy(i);
+            Destroy(i.transform.root.gameObject);
+        }
     }
 
     public GameObject buildingAtVector3(Vector3 location, Vector3 rotation)
     {
-        /* Vector3 noise = location / coordGen.roadDistance;
+        Vector3 noise = location / coordGen.roadDistance;
         float coordinateNoise = Mathf.PerlinNoise(coordGen.ruralMapOffset.x + noise.x, coordGen.ruralMapOffset.y + noise.z);
         coordinateNoise = 10 * Mathf.Clamp01(coordinateNoise);
 
         int areaRuralityInt = Mathf.FloorToInt(coordinateNoise);
 
-        Debug.Log(areaRuralityInt);
-        
-
-        int ruralValue = UrbanBoundsValues[areaRuralityInt].ruralValue;
-        int urbanValue = UrbanBoundsValues[areaRuralityInt].urbanValue;
-        */
-        int chosenPercent = UnityEngine.Random.Range(0, 100);
-
         GameObject chosenContainer;
         GameObject tempGameObject;
 
-        if(chosenPercent >= 100 - 15)
+        if(areaRuralityInt >= 7)
         {
             tempGameObject = Instantiate(cube, location, Quaternion.Euler(rotation));
             tempGameObject.transform.localScale = new Vector3(1f, (buildingStartingHeight + (Mathf.PerlinNoise(location.x, location.z) * buildingAmplitude)), 1f);
@@ -74,11 +98,10 @@ public class BuildingGenerator : MonoBehaviour {
 
             chosenContainer = ruralContainer;
         }
-        else if(chosenPercent <= 30)
+        else if(areaRuralityInt <= 3)
         {
-            tempGameObject = Instantiate(cube, location, Quaternion.Euler(rotation));
-            tempGameObject.transform.localScale = new Vector3(1f, (buildingStartingHeight + (Mathf.PerlinNoise(location.x, location.z) * buildingAmplitude)), 1f);
-            tempGameObject.transform.GetChild(0).localScale = new Vector3(buildingSize, 1f, buildingSize);
+            tempGameObject = Instantiate(generatedBuildings[UnityEngine.Random.Range(0,uniqueBuildings)], location, Quaternion.Euler(rotation + (Vector3.up * 90)));
+            tempGameObject.transform.localScale = Vector3.one * urbanBuildingSize;
 
             chosenContainer = urbanContainer;
         }
@@ -105,7 +128,7 @@ public class BuildingGenerator : MonoBehaviour {
 
         UrbanPrefabList prefabList = roundShape ? cityPrefabs.RoundPrefabs : cityPrefabs.SquarePrefabs;
 
-        GameObject door = Instantiate(prefabList.DoorPrefabs[UnityEngine.Random.Range(0, prefabList.DoorPrefabs.Length)], position, Quaternion.Euler(rotation));
+        GameObject door = Instantiate(prefabList.DoorPrefabs[UnityEngine.Random.Range(0, prefabList.DoorPrefabs.Length)], position, Quaternion.identity);
         door.transform.parent = tempParent.transform;
         door.transform.name = "Door";
 
@@ -113,12 +136,12 @@ public class BuildingGenerator : MonoBehaviour {
         {
             for (int i = 0; i <= awningHeight; i++)
             {
-                GameObject lowerWall = Instantiate(prefabList.WindowPrefabs[UnityEngine.Random.Range(0, prefabList.WindowPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.Euler(rotation));
+                GameObject lowerWall = Instantiate(prefabList.WindowPrefabs[UnityEngine.Random.Range(0, prefabList.WindowPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.identity);
                 lowerWall.transform.parent = tempParent.transform;
                 lowerWall.transform.name = "Lower Wall";
             }
 
-            GameObject awning = Instantiate(cityPrefabs.AwningPrefabs[UnityEngine.Random.Range(0, cityPrefabs.AwningPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.Euler(rotation));
+            GameObject awning = Instantiate(cityPrefabs.AwningPrefabs[UnityEngine.Random.Range(0, cityPrefabs.AwningPrefabs.Length)], position + new Vector3(0f, 0.9375f * tempParent.transform.childCount, 0f), Quaternion.identity);
             awning.transform.parent = tempParent.transform;
             awning.transform.name = "Awning";
         }
@@ -127,18 +150,19 @@ public class BuildingGenerator : MonoBehaviour {
 
         for (int i = 0; i <= buildingHeight; i++)
         {
-            GameObject wall = Instantiate(prefabList.WindowPrefabs[UnityEngine.Random.Range(0, prefabList.WindowPrefabs.Length)], position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.Euler(rotation));
+            GameObject wall = Instantiate(prefabList.WindowPrefabs[UnityEngine.Random.Range(0, prefabList.WindowPrefabs.Length)], position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.identity);
             wall.transform.parent = tempParent.transform;
             wall.transform.name = "Wall";
         }
 
         GameObject chosenPrefab = prefabList.RoofPrefabs[UnityEngine.Random.Range(0, prefabList.RoofPrefabs.Length)];
-        GameObject roof = Instantiate(chosenPrefab, position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.Euler(rotation));
+        GameObject roof = Instantiate(chosenPrefab, position + new Vector3(0f, (0.9375f * tempParent.transform.childCount) - offset, 0f), Quaternion.identity);
 
         roof.transform.localPosition += chosenPrefab.transform.position;
         roof.transform.parent = tempParent.transform;
         roof.transform.name = "Roof";
 
+        tempParent.transform.Rotate(rotation);
         return tempParent;
     }
 
@@ -174,11 +198,19 @@ public class BuildingGenerator : MonoBehaviour {
         {
             for (int i = 0; i < housesPerRoad; i++)
             {
-                buildingAtVector3(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1)), FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position));
-                buildingAtVector3(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1)), FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position) + new Vector3(0f, 180f));
+                float interpolant = Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1);
 
-                buildingAtVector3(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position, Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1)), FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position));
-                buildingAtVector3(Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position, Mathf.InverseLerp(0f, housesPerRoad + 1, i + 1)), FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position) + new Vector3(0f, 180f));
+                Vector3 pos1 = Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position, interpolant);
+                Vector3 pos2 = Vector3.Lerp(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position, interpolant);
+
+                Vector3 rot1 = FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[1].transform.position);
+                Vector3 rot2 = FindPerpendicularAngle(currentGridCoordinates[0].transform.position, currentGridCoordinates[2].transform.position);
+
+                buildingAtVector3(pos1, rot1);
+                buildingAtVector3(pos1, rot1 + new Vector3(0f, 180f));
+
+                buildingAtVector3(pos2, rot2);
+                buildingAtVector3(pos2, rot2 + new Vector3(0f, 180f));
             }
         }
     }
